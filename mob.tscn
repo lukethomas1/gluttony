@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://bxfg7gcod1cwb"]
+
+[ext_resource type="Texture2D" uid="uid://b8chr2mton88l" path="res://icon.svg" id="1_o8ylk"]
+[ext_resource type="Script" path="res://mob.gd" id="1_vslxf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cxr56"]
+size = Vector2(118, 118)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dya86"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_o8ylk")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Mob" type="RigidBody2D" groups=["mobs"]]
+collision_mask = 0
+gravity_scale = 0.0
+script = ExtResource("1_vslxf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_cxr56")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_dya86")
+flip_v = true
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]

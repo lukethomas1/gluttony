@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://c14jl1isqcdea"]
+
+[node name="Area2D" type="Area2D"]
+
+[node name="TestLabel" type="Label" parent="."]
+offset_left = -8.0
+offset_top = -24.0
+offset_right = 121.0
+offset_bottom = 64.0
+theme_override_font_sizes/font_size = 64
+text = "Test"
