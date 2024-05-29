@@ -18,7 +18,7 @@ func show_game_over():
 
 
 func update_score(score):
-	$ScoreLabel.text = str(score)
+	$ScoreLabel.text = "%d" % score
 
 
 func _on_start_button_pressed():

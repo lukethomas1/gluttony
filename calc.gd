@@ -2,13 +2,13 @@
 class_name Calc
 
 
-const default_score:float = 10.0
+const default_score:float = 20.0
 const icon_width_pixels = 128
 
 
 # Calc mob and player size, based on the mob size or player score
 static func calc_scale(size:float):
-    var scale_value = 1 + log(size / default_score)
+    var scale_value = 0.5 + log(size / default_score)
     return Vector2(scale_value, scale_value)
 
 
@@ -20,4 +20,4 @@ static func calc_mob_velocity(player_score:float):
 
 
 static func calc_growth_amount(_player_score, _mob_size):
-    return 0.5
+    return 1

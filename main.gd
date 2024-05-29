@@ -3,9 +3,6 @@ extends Node
 var mob_scene: PackedScene = preload("res://mob.tscn")
 var mob_script = preload("res://mob.gd")
 
-@onready var left_spawn = $LeftMobPath/LeftMobSpawnLocation
-@onready var right_spawn = $RightMobPath/RightMobSpawnLocation
-
 var screen_size:Vector2
 var player_score:float
 
@@ -54,10 +51,10 @@ func _on_mob_timer_timeout():
 
 
     print("Mob x scale %s" % mob_x_scale)
-    var mob_spawn_pos_x = [0, screen_size[0] + mob_x_width - 1][randi() % 2]
+    var mob_spawn_pos_x = [-1 * mob_x_width, screen_size[0] + mob_x_width][randi() % 2]
     print("Mob spawn x: %s" % mob_spawn_pos_x)
     var mob_spawn_pos_y = randf_range(0, screen_size[1])
-    var direction = float(0) if mob_spawn_pos_x == 0 else PI
+    var direction = float(0) if mob_spawn_pos_x <= 0 else PI
 
     mob.position = Vector2(mob_spawn_pos_x, mob_spawn_pos_y)
 

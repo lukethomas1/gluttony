@@ -35,7 +35,7 @@ func _on_body_entered(_body):
 
 func grow_player(mob_size):
 	var growth_amount = Calc.calc_growth_amount(score, mob_size)
-	score += int(growth_amount)
+	score += growth_amount
 	scale_player_size()
 	grow.emit(score)
 
