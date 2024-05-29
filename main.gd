@@ -7,7 +7,8 @@ var mob_script = preload("res://mob.gd")
 @onready var right_spawn = $RightMobPath/RightMobSpawnLocation
 
 var screen_size:Vector2
-var player_score
+var player_score:float
+
 
 func _ready():
     Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -28,15 +29,15 @@ func game_over():
 
 func _on_player_grow(score:int):
     player_score = score
-    $HUD.update_score(player_score - 100)
+    $HUD.update_score(player_score - Calc.default_score)
 
 
 func new_game():
     print("New game")
     get_tree().call_group(&"mobs", &"queue_free")
-    player_score = 100
+    player_score = Calc.default_score
     $StartTimer.start()
-    $HUD.update_score(player_score - 100)
+    $HUD.update_score(player_score - Calc.default_score)
     $HUD.show_message("Get Ready")
     $Player.start()
     Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
@@ -48,29 +49,20 @@ func _on_mob_timer_timeout():
     $Player.grow.connect(mob.adjust_to_score)
     print("Mob size: %s" % str(mob.size))
 
-    var mob_spawn_pos_x = [0, screen_size[0]][randi() % 2]
+    var mob_x_scale = mob.get_node("CollisionShape2D").scale[0]
+    var mob_x_width = Calc.icon_width_pixels * mob_x_scale
+
+
+    print("Mob x scale %s" % mob_x_scale)
+    var mob_spawn_pos_x = [0, screen_size[0] + mob_x_width - 1][randi() % 2]
+    print("Mob spawn x: %s" % mob_spawn_pos_x)
     var mob_spawn_pos_y = randf_range(0, screen_size[1])
     var direction = float(0) if mob_spawn_pos_x == 0 else PI
 
     mob.position = Vector2(mob_spawn_pos_x, mob_spawn_pos_y)
 
-    # Choose a random location on Path2D.
-    # var mob_spawn_paths = [left_spawn, right_spawn]
-    # var mob_spawn_location = mob_spawn_paths[randi() % mob_spawn_paths.size()]
-    # mob_spawn_location.progress_ratio = randf()
-
-    # Set the mob's direction perpendicular to the path direction.
-    # var direction = mob_spawn_location.rotation + PI / 2
-
-    # Set the mob's position to a random location.
-    # mob.position = mob_spawn_location.position
-
-    # Add some randomness to the direction.
-    # direction += randf_range(-PI / 4, PI / 4)
-    # mob.rotation = direction
-
-    # Choose the velocity for the mob.
-    var velocity = Vector2(randf_range(150.0, 250.0), 0.0)
+    # Choose the velocity for the mob, get faster as score goes up
+    var velocity = Calc.calc_mob_velocity(player_score)
     mob.linear_velocity = velocity.rotated(direction)
 
     # Spawn the mob by adding it to the Main scene.
@@ -79,5 +71,3 @@ func _on_mob_timer_timeout():
 
 func _on_start_timer_timeout():
     $MobTimer.start()
-
-

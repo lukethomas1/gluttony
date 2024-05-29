@@ -14,7 +14,6 @@ func show_game_over():
 	await $MessageTimer.timeout
 	$MessageLabel.text = "Eat or Be Eaten"
 	$MessageLabel.show()
-	await get_tree().create_timer(1).timeout
 	$StartButton.show()
 
 
