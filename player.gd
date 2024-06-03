@@ -4,6 +4,7 @@ signal grow(score:int)
 signal game_over
 
 const Mob = preload("res://mob.gd")
+const Powerup = preload("res://powerup.gd")
 
 var score:float
 
@@ -20,17 +21,30 @@ func _input(event):
 
 func _on_body_entered(_body):
 	var mob = _body as Mob
-
 	if mob != null:
-		print("Player score: %s, Mob score %s" % [score, mob.size])
-		if score > mob.size:
-			mob.die()
-			grow_player(mob.size)
+		handle_mob(mob)
 
-		elif score <= mob.size:
-			hide()
-			$CollisionShape2D.set_deferred(&"disabled", true)
-			game_over.emit()
+	var powerup = _body as Powerup
+	if powerup != null:
+		print("Player hit powerup")
+		handle_powerup(powerup)
+
+
+func handle_powerup(powerup: Powerup):
+	print("Doing powerup things")
+	powerup.die()
+
+
+func handle_mob(mob: Mob):
+	print("Player score: %s, Mob score %s" % [score, mob.size])
+	if score > mob.size:
+		mob.die()
+		grow_player(mob.size)
+
+	elif score <= mob.size:
+		hide()
+		$CollisionShape2D.set_deferred(&"disabled", true)
+		game_over.emit()
 
 
 func grow_player(mob_size):

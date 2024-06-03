@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cnf5gp40bof1r"]
+
+[ext_resource type="Texture2D" uid="uid://1rkkccmi5wpj" path="res://assets/blue_body_square.png" id="1_p0yme"]
+[ext_resource type="Texture2D" uid="uid://uu06tocal0at" path="res://assets/face_a.png" id="2_kxkvm"]
+
+[node name="PlayerImage" type="Node"]
+
+[node name="Square" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_p0yme")
+
+[node name="Eyes" type="TextureRect" parent="."]
+offset_top = 16.0
+offset_right = 80.0
+offset_bottom = 64.0
+texture = ExtResource("2_kxkvm")

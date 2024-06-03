@@ -18,8 +18,12 @@ one_shot = true
 
 [node name="HUD" parent="." instance=ExtResource("4_b5xol")]
 
+[node name="PowerupTimer" type="Timer" parent="."]
+wait_time = 5.0
+
 [connection signal="game_over" from="Player" to="." method="game_over"]
 [connection signal="grow" from="Player" to="." method="_on_player_grow"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
+[connection signal="timeout" from="PowerupTimer" to="." method="_on_powerup_timer_timeout"]
