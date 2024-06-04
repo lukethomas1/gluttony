@@ -3,14 +3,10 @@
 [ext_resource type="Texture2D" uid="uid://b8fjdgx7mxxbe" path="res://assets/red_body_square.png" id="1_xhfr6"]
 [ext_resource type="Texture2D" uid="uid://dwa6ffq0ytg7f" path="res://assets/face_f.png" id="2_f3qje"]
 
-[node name="MobImage" type="Node"]
+[node name="MobImage" type="Node2D"]
 
-[node name="Square" type="TextureRect" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Square" type="Sprite2D" parent="."]
 texture = ExtResource("1_xhfr6")
 
-[node name="Eyes" type="TextureRect" parent="."]
-offset_right = 80.0
-offset_bottom = 64.0
+[node name="Eyes" type="Sprite2D" parent="."]
 texture = ExtResource("2_f3qje")
