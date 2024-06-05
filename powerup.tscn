@@ -17,7 +17,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Powerup" type="RigidBody2D"]
+[node name="Powerup" type="RigidBody2D" groups=["powerups"]]
 collision_mask = 0
 gravity_scale = 0.0
 linear_damp_mode = 1

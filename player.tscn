@@ -1,29 +1,23 @@
 [gd_scene load_steps=5 format=3 uid="uid://ba5o8byh6dddb"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_2623o"]
-[ext_resource type="Texture2D" uid="uid://dppywfwyow2vi" path="res://icon.svg" id="2_a7vp8"]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_86o0b"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("2_a7vp8")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
+[ext_resource type="Texture2D" uid="uid://1rkkccmi5wpj" path="res://assets/blue_body_square.png" id="2_j0bby"]
+[ext_resource type="Texture2D" uid="uid://uu06tocal0at" path="res://assets/face_a.png" id="3_sm362"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b6k77"]
-size = Vector2(118, 118)
+size = Vector2(75, 74)
 
 [node name="Player" type="Area2D"]
 script = ExtResource("1_2623o")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_86o0b")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_b6k77")
+
+[node name="Body" type="Sprite2D" parent="."]
+texture = ExtResource("2_j0bby")
+
+[node name="Eyes" type="Sprite2D" parent="."]
+texture = ExtResource("3_sm362")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

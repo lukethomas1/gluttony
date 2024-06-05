@@ -23,12 +23,17 @@ func game_over():
     $MobTimer.stop()
     $PowerupTimer.stop()
     $HUD.show_game_over()
+    get_tree().call_group("mobs", "die")
+    get_tree().call_group("powerups", "die")
     Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+    $Music.stop()
+    $DeathSound.play()
 
 
 func _on_player_grow(score:int):
     player_score = score
     $HUD.update_score(player_score - Calc.default_score)
+    $EatSound.play()
 
 
 func new_game():
@@ -39,6 +44,7 @@ func new_game():
     $HUD.show_message("Get Ready")
     $Player.start()
     Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+    $Music.play()
 
 
 func _on_mob_timer_timeout():

@@ -1,8 +1,20 @@
-[gd_scene load_steps=4 format=3 uid="uid://b65k3ent64b2n"]
+[gd_scene load_steps=9 format=3 uid="uid://b65k3ent64b2n"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_leb16"]
 [ext_resource type="PackedScene" uid="uid://ba5o8byh6dddb" path="res://player.tscn" id="2_jn2rh"]
+[ext_resource type="AudioStream" uid="uid://wuuqu5aotte7" path="res://assets/audio/eat_sound1.mp3" id="4_b3wme"]
 [ext_resource type="PackedScene" uid="uid://dutv267w84lh" path="res://hud.tscn" id="4_b5xol"]
+[ext_resource type="AudioStream" uid="uid://f0bjl4prg5gc" path="res://assets/audio/pacman_death.wav" id="4_p2b6q"]
+[ext_resource type="AudioStream" uid="uid://dowj4fa6c1udf" path="res://assets/audio/eat_sound2.mp3" id="5_0ty34"]
+[ext_resource type="AudioStream" uid="uid://dmvf52f1i7y20" path="res://assets/audio/Tetris Theme (Korobeiniki).mp3" id="5_y3igt"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_bxlmm"]
+playback_mode = 1
+streams_count = 2
+stream_0/stream = ExtResource("4_b3wme")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("5_0ty34")
+stream_1/weight = 1.0
 
 [node name="Main" type="Node"]
 script = ExtResource("1_leb16")
@@ -20,6 +32,19 @@ one_shot = true
 
 [node name="PowerupTimer" type="Timer" parent="."]
 wait_time = 5.0
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_y3igt")
+volume_db = -3.0
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_p2b6q")
+volume_db = -10.0
+
+[node name="PowerupSound" type="AudioStreamPlayer" parent="."]
+
+[node name="EatSound" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_bxlmm")
 
 [connection signal="game_over" from="Player" to="." method="game_over"]
 [connection signal="grow" from="Player" to="." method="_on_player_grow"]

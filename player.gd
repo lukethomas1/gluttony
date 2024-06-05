@@ -57,7 +57,8 @@ func grow_player(mob_size):
 func scale_player_size():
 	var new_scale = Calc.calc_scale(score)
 	$CollisionShape2D.scale = new_scale
-	$AnimatedSprite2D.scale = new_scale
+	$Body.scale = new_scale
+	$Eyes.scale = new_scale
 
 
 func start():
