@@ -19,6 +19,12 @@ func handle_window_resize():
 	print("Window resize, screen_size: %s" % str(screen_size))
 
 
+func _input(event):
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_ESCAPE:
+			get_tree().quit()
+
+
 func new_game():
 	get_tree().call_group(&"mobs", &"queue_free")
 	player_score = Calc.default_score
