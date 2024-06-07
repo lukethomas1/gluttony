@@ -7,11 +7,19 @@ const powerup_scene = preload("res://powerup.tscn")
 var screen_size:Vector2
 var player_score:float
 
+var login_failures = 0
+
+const COLLECTION_ID = "LeaderboardV1"
+
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	screen_size = get_viewport().get_visible_rect().size
 	get_tree().get_root().size_changed.connect(handle_window_resize)
+	$SubmitScoreBox.hide()
+
+	Firebase.Auth.auth_request.connect(_on_auth_request)
+	Firebase.Auth.login_anonymous()
 
 
 func handle_window_resize():
@@ -25,6 +33,18 @@ func _input(event):
 			get_tree().quit()
 
 
+func _on_auth_request(result_code, result_content):
+	print("Auth request")
+	if result_code == 1:
+		print("Auth request succeeded")
+		load_leaderboard()
+	else:
+		print("Login failed, code %s, message: %s" % [str(result_code), str(result_content)])
+		login_failures += 1
+		if login_failures < 3:
+			Firebase.Auth.login_anonymous()
+
+
 func new_game():
 	get_tree().call_group(&"mobs", &"queue_free")
 	player_score = Calc.default_score
@@ -35,6 +55,10 @@ func new_game():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 	$Music.play()
 
+	$Leaderboard.hide()
+	$SubmitScoreBox.hide()
+	$Instructions.hide()
+
 
 func game_over():
 	$MobTimer.stop()
@@ -44,6 +68,49 @@ func game_over():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	$Music.stop()
 	$DeathSound.play()
+
+	load_leaderboard()
+	$Leaderboard.show()
+	get_node("SubmitScoreBox/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ScoreLabel").text = str(int(player_score - Calc.default_score))
+	$SubmitScoreBox.show()
+	$Instructions.show()
+
+
+func _on_submit_score():
+	var auth = Firebase.Auth.auth
+	if !auth.is_empty():
+		var player_name = (get_node("SubmitScoreBox/PanelContainer/MarginContainer/VBoxContainer/NameInput") as LineEdit).text
+		var datetime = Time.get_datetime_string_from_system(true, false)
+		var collection: FirestoreCollection = Firebase.Firestore.collection(COLLECTION_ID)
+
+		var data = {
+			"name": player_name,
+			"score": int(player_score - Calc.default_score),
+			"datetime": datetime,
+		}
+		var doc_name = "%s_%s_%s" % [data["name"], str(data["score"]), data["datetime"]]
+		var add_task: FirestoreTask = collection.add(doc_name, data)
+		var result = await add_task.add_document
+		if result != null:
+			print("Submit succeeded")
+			$SubmitScoreBox.hide()
+			load_leaderboard()
+
+
+func load_leaderboard():
+	print("Loading leaderboard")
+	var auth = Firebase.Auth.auth
+	if !auth.is_empty():
+		var query : FirestoreQuery = FirestoreQuery.new().from(COLLECTION_ID).order_by("score", FirestoreQuery.DIRECTION.DESCENDING).limit(24)
+		var query_task : FirestoreTask = Firebase.Firestore.query(query)
+		var result : Array = await query_task.result_query
+
+		$Leaderboard.remove_all()
+
+		for item in result:
+			$Leaderboard.add_score(item.doc_fields["name"], item.doc_fields["score"])
+	else:
+		print("No auth")
 
 
 func _on_player_grow(score:int):

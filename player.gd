@@ -46,7 +46,6 @@ func do_bomb():
 
 
 func handle_mob(mob: Mob):
-	print("Player score: %s, Mob score %s" % [score, mob.size])
 	if score > mob.size:
 		mob.die()
 		grow_player(mob.size)

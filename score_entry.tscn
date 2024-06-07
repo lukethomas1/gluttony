@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://ch0aisavbobfv"]
+
+[node name="ScoreEntry" type="HBoxContainer"]
+
+[node name="NameLabel" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_font_sizes/font_size = 24
+text = "Luke"
+
+[node name="ScoreLabel" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_font_sizes/font_size = 24
+text = "123"

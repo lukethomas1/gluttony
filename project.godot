@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
 boot_splash/minimum_display_time=2000
 
+[autoload]
+
+Firebase="*res://addons/godot-firebase/firebase/firebase.tscn"
+
 [display]
 
 window/size/viewport_width=1920
@@ -28,10 +32,9 @@ window/stretch/aspect="expand"
 
 project/assembly_name="Gluttony"
 
-[editor]
+[editor_plugins]
 
-version_control/plugin_name="GitPlugin"
-version_control/autoload_on_startup=true
+enabled=PackedStringArray("res://addons/godot-firebase/plugin.cfg")
 
 [rendering]
 
