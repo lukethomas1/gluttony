@@ -148,8 +148,8 @@ func _on_start_timer_timeout():
 
 
 func create_bomb():
-	var powerup_spawn_pos_x = randf_range(0, screen_size[0])
-	var powerup_spawn_pos_y = randf_range(0, screen_size[1])
+	var powerup_spawn_pos_x = randf_range(200, screen_size[0] - 200)
+	var powerup_spawn_pos_y = randf_range(100, screen_size[1] - 100)
 
 	var powerup = powerup_scene.instantiate()
 	powerup.position = Vector2(powerup_spawn_pos_x, powerup_spawn_pos_y)
