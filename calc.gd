@@ -3,7 +3,7 @@ class_name Calc
 
 
 const default_score:float = 30.0
-const bomb_spawn_frequency:int = 25
+const bomb_spawn_frequency:int = 100
 const icon_width_pixels = 80
 
 

@@ -2,12 +2,14 @@ extends Area2D
 
 signal grow(score:int)
 signal game_over
+signal num_bombs_changed(num_bombs:int)
 
 const Mob = preload("res://mob.gd")
 const Powerup = preload("res://powerup.gd")
 
 var score:float
-var has_bomb:bool = false
+var num_bombs:int = 0
+var playing:bool = false
 
 
 # Called when the node enters the scene tree for the first time.
@@ -19,7 +21,7 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		position = event.position
 	elif event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed && has_bomb:
+		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed && num_bombs > 0:
 			do_bomb()
 
 
@@ -27,21 +29,18 @@ func _on_body_entered(_body):
 	var mob = _body as Mob
 	if mob != null:
 		handle_mob(mob)
+		return
 
 	var powerup = _body as Powerup
 	if powerup != null:
-		print("Player hit powerup")
-		handle_powerup(powerup)
-
-
-func handle_powerup(powerup: Powerup):
-	print("Doing powerup things")
-	has_bomb = true
-	powerup.die()
+		num_bombs += 1
+		num_bombs_changed.emit(num_bombs)
+		powerup.die()
 
 
 func do_bomb():
-	has_bomb = false
+	num_bombs -= 1
+	num_bombs_changed.emit(num_bombs)
 	get_tree().call_group("mobs", "die")
 	$BombSound.play()
 
@@ -53,9 +52,7 @@ func handle_mob(mob: Mob):
 		grow_player(mob.size)
 
 	elif score <= mob.size:
-		hide()
-		$CollisionShape2D.set_deferred(&"disabled", true)
-		game_over.emit()
+		do_game_over()
 
 
 func grow_player(mob_size):
@@ -73,9 +70,19 @@ func scale_player_size():
 
 
 func start():
-	print("Player start")
 	score = Calc.default_score
 	scale_player_size()
 	show()
-	has_bomb = false
 	$CollisionShape2D.disabled = false
+	playing = true
+	num_bombs = 3
+	num_bombs_changed.emit(num_bombs)
+
+
+func do_game_over():
+	playing = false
+	hide()
+	$CollisionShape2D.set_deferred(&"disabled", true)
+	num_bombs = 0
+	num_bombs_changed.emit(num_bombs)
+	game_over.emit()

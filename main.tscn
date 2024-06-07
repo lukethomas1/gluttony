@@ -47,4 +47,5 @@ position = Vector2(587, 283)
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
 [connection signal="game_over" from="Player" to="." method="game_over"]
 [connection signal="grow" from="Player" to="." method="_on_player_grow"]
+[connection signal="num_bombs_changed" from="Player" to="HUD" method="_on_num_bombs_changed"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]

@@ -42,7 +42,7 @@ func game_over():
 
 func _on_player_grow(score:int):
 	player_score = score
-	if int(player_score) % Calc.bomb_spawn_frequency == 0:
+	if int(player_score - Calc.default_score) % Calc.bomb_spawn_frequency == 0:
 		create_bomb()
 	$HUD.update_score(player_score - Calc.default_score)
 	$EatSound.play()
