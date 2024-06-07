@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dutv267w84lh"]
+[gd_scene load_steps=3 format=3 uid="uid://dutv267w84lh"]
 
 [ext_resource type="Script" path="res://hud.gd" id="1_24d7y"]
+[ext_resource type="Texture2D" uid="uid://bxxfws1qoynf6" path="res://assets/textures/bomb.png" id="2_y0510"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_24d7y")
@@ -46,6 +47,18 @@ text = "Start"
 
 [node name="MessageTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -72.0
+offset_right = 28.0
+offset_bottom = 100.0
+grow_horizontal = 0
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_y0510")
+expand_mode = 3
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="timeout" from="MessageTimer" to="." method="_on_message_timer_timeout"]

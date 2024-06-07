@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://ba5o8byh6dddb"]
+[gd_scene load_steps=6 format=3 uid="uid://ba5o8byh6dddb"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_2623o"]
-[ext_resource type="Texture2D" uid="uid://1rkkccmi5wpj" path="res://assets/blue_body_square.png" id="2_j0bby"]
-[ext_resource type="Texture2D" uid="uid://uu06tocal0at" path="res://assets/face_a.png" id="3_sm362"]
+[ext_resource type="Texture2D" uid="uid://1rkkccmi5wpj" path="res://assets/textures/blue_body_square.png" id="2_figbe"]
+[ext_resource type="Texture2D" uid="uid://uu06tocal0at" path="res://assets/textures/face_a.png" id="3_np56v"]
+[ext_resource type="AudioStream" uid="uid://dcb1jyt3pfa4a" path="res://assets/audio/bomb.mp3" id="4_8ito4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b6k77"]
 size = Vector2(75, 74)
@@ -15,9 +16,12 @@ position = Vector2(-0.5, 0)
 shape = SubResource("RectangleShape2D_b6k77")
 
 [node name="Body" type="Sprite2D" parent="."]
-texture = ExtResource("2_j0bby")
+texture = ExtResource("2_figbe")
 
 [node name="Eyes" type="Sprite2D" parent="."]
-texture = ExtResource("3_sm362")
+texture = ExtResource("3_np56v")
+
+[node name="BombSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_8ito4")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

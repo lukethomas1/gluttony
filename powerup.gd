@@ -8,3 +8,7 @@ func _ready():
 
 func die():
 	queue_free()
+
+
+func _on_despawn_timer_timeout():
+	die()

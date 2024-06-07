@@ -3,7 +3,8 @@ class_name Calc
 
 
 const default_score:float = 30.0
-const icon_width_pixels = 128
+const bomb_spawn_frequency:int = 25
+const icon_width_pixels = 80
 
 
 # Calc mob and player size, based on the mob size or player score

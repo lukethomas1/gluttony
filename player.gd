@@ -7,6 +7,7 @@ const Mob = preload("res://mob.gd")
 const Powerup = preload("res://powerup.gd")
 
 var score:float
+var has_bomb:bool = false
 
 
 # Called when the node enters the scene tree for the first time.
@@ -17,6 +18,9 @@ func _ready():
 func _input(event):
 	if event is InputEventMouseMotion:
 		position = event.position
+	elif event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed && has_bomb:
+			do_bomb()
 
 
 func _on_body_entered(_body):
@@ -32,7 +36,14 @@ func _on_body_entered(_body):
 
 func handle_powerup(powerup: Powerup):
 	print("Doing powerup things")
+	has_bomb = true
 	powerup.die()
+
+
+func do_bomb():
+	has_bomb = false
+	get_tree().call_group("mobs", "die")
+	$BombSound.play()
 
 
 func handle_mob(mob: Mob):
@@ -66,4 +77,5 @@ func start():
 	score = Calc.default_score
 	scale_player_size()
 	show()
+	has_bomb = false
 	$CollisionShape2D.disabled = false

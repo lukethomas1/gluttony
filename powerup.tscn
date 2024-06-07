@@ -32,3 +32,9 @@ shape = SubResource("RectangleShape2D_l4dj6")
 rotation = 0.785398
 scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_o44e4")
+
+[node name="DespawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="timeout" from="DespawnTimer" to="." method="_on_despawn_timer_timeout"]

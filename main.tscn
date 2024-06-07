@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://main.gd" id="1_leb16"]
 [ext_resource type="PackedScene" uid="uid://ba5o8byh6dddb" path="res://player.tscn" id="2_jn2rh"]
+[ext_resource type="AudioStream" uid="uid://dmvf52f1i7y20" path="res://assets/audio/TetrisSpotify.mp3" id="2_mw80r"]
 [ext_resource type="AudioStream" uid="uid://wuuqu5aotte7" path="res://assets/audio/eat_sound1.mp3" id="4_b3wme"]
 [ext_resource type="PackedScene" uid="uid://dutv267w84lh" path="res://hud.tscn" id="4_b5xol"]
 [ext_resource type="AudioStream" uid="uid://f0bjl4prg5gc" path="res://assets/audio/pacman_death.wav" id="4_p2b6q"]
 [ext_resource type="AudioStream" uid="uid://dowj4fa6c1udf" path="res://assets/audio/eat_sound2.mp3" id="5_0ty34"]
-[ext_resource type="AudioStream" uid="uid://dmvf52f1i7y20" path="res://assets/audio/Tetris Theme (Korobeiniki).mp3" id="5_y3igt"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_bxlmm"]
 playback_mode = 1
@@ -19,22 +19,14 @@ stream_1/weight = 1.0
 [node name="Main" type="Node"]
 script = ExtResource("1_leb16")
 
-[node name="Player" parent="." instance=ExtResource("2_jn2rh")]
-position = Vector2(587, 283)
-
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 0.25
 
 [node name="StartTimer" type="Timer" parent="."]
 one_shot = true
 
-[node name="HUD" parent="." instance=ExtResource("4_b5xol")]
-
-[node name="PowerupTimer" type="Timer" parent="."]
-wait_time = 5.0
-
 [node name="Music" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("5_y3igt")
+stream = ExtResource("2_mw80r")
 volume_db = -3.0
 
 [node name="DeathSound" type="AudioStreamPlayer" parent="."]
@@ -46,9 +38,13 @@ volume_db = -10.0
 [node name="EatSound" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamRandomizer_bxlmm")
 
-[connection signal="game_over" from="Player" to="." method="game_over"]
-[connection signal="grow" from="Player" to="." method="_on_player_grow"]
+[node name="Player" parent="." instance=ExtResource("2_jn2rh")]
+position = Vector2(587, 283)
+
+[node name="HUD" parent="." instance=ExtResource("4_b5xol")]
+
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
+[connection signal="game_over" from="Player" to="." method="game_over"]
+[connection signal="grow" from="Player" to="." method="_on_player_grow"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
-[connection signal="timeout" from="PowerupTimer" to="." method="_on_powerup_timer_timeout"]
