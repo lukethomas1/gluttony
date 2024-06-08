@@ -80,6 +80,7 @@ func _on_submit_score():
 	var auth = Firebase.Auth.auth
 	if !auth.is_empty():
 		var player_name = (get_node("SubmitScoreBox/PanelContainer/MarginContainer/VBoxContainer/NameInput") as LineEdit).text
+		print("Submitting with player name %s" % player_name)
 		var datetime = Time.get_datetime_string_from_system(true, false)
 		var collection: FirestoreCollection = Firebase.Firestore.collection(COLLECTION_ID)
 
@@ -88,7 +89,7 @@ func _on_submit_score():
 			"score": int(player_score - Calc.default_score),
 			"datetime": datetime,
 		}
-		var doc_name = "%s_%s_%s" % [data["name"], str(data["score"]), data["datetime"]]
+		var doc_name = "%s_%s_%s" % [data["name"].replace(" ", "-"), str(data["score"]), data["datetime"]]
 		var add_task: FirestoreTask = collection.add(doc_name, data)
 		var result = await add_task.add_document
 		if result != null:
