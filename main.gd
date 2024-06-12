@@ -16,7 +16,6 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	screen_size = get_viewport().get_visible_rect().size
 	get_tree().get_root().size_changed.connect(handle_window_resize)
-	$SubmitScoreBox.hide()
 
 	Firebase.Auth.auth_request.connect(_on_auth_request)
 	Firebase.Auth.login_anonymous()

@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://main.gd" id="1_leb16"]
 [ext_resource type="PackedScene" uid="uid://ba5o8byh6dddb" path="res://player.tscn" id="2_jn2rh"]
-[ext_resource type="AudioStream" uid="uid://dmvf52f1i7y20" path="res://assets/audio/TetrisSpotify.mp3" id="2_mw80r"]
-[ext_resource type="AudioStream" uid="uid://wuuqu5aotte7" path="res://assets/audio/eat_sound1.mp3" id="4_b3wme"]
+[ext_resource type="AudioStream" uid="uid://dmvf52f1i7y20" path="res://assets/audio/music/TetrisSpotify.mp3" id="2_mw80r"]
+[ext_resource type="AudioStream" uid="uid://wuuqu5aotte7" path="res://assets/audio/effects/eat_sound1.mp3" id="4_b3wme"]
 [ext_resource type="PackedScene" uid="uid://dutv267w84lh" path="res://hud.tscn" id="4_b5xol"]
-[ext_resource type="AudioStream" uid="uid://f0bjl4prg5gc" path="res://assets/audio/pacman_death.wav" id="4_p2b6q"]
-[ext_resource type="AudioStream" uid="uid://dowj4fa6c1udf" path="res://assets/audio/eat_sound2.mp3" id="5_0ty34"]
+[ext_resource type="AudioStream" uid="uid://f0bjl4prg5gc" path="res://assets/audio/effects/pacman_death.wav" id="4_p2b6q"]
+[ext_resource type="AudioStream" uid="uid://dowj4fa6c1udf" path="res://assets/audio/effects/eat_sound2.mp3" id="5_0ty34"]
 [ext_resource type="PackedScene" uid="uid://btjrxknvsqn8m" path="res://submit_score_box.tscn" id="8_8m0t1"]
 [ext_resource type="PackedScene" uid="uid://dl2yc2ofs3qmo" path="res://leaderboard.tscn" id="9_x3lnn"]
 [ext_resource type="PackedScene" uid="uid://c5orn7jewfn3l" path="res://instructions.tscn" id="10_t7gtf"]
@@ -31,15 +31,19 @@ one_shot = true
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_mw80r")
 volume_db = -3.0
+bus = &"Music"
 
 [node name="DeathSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_p2b6q")
 volume_db = -10.0
+bus = &"Effects"
 
 [node name="PowerupSound" type="AudioStreamPlayer" parent="."]
+bus = &"Effects"
 
 [node name="EatSound" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamRandomizer_bxlmm")
+bus = &"Effects"
 
 [node name="Player" parent="." instance=ExtResource("2_jn2rh")]
 position = Vector2(587, 283)
@@ -47,6 +51,7 @@ position = Vector2(587, 283)
 [node name="HUD" parent="." instance=ExtResource("4_b5xol")]
 
 [node name="SubmitScoreBox" parent="." instance=ExtResource("8_8m0t1")]
+visible = false
 
 [node name="Leaderboard" parent="." instance=ExtResource("9_x3lnn")]
 

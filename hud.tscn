@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dutv267w84lh"]
+[gd_scene load_steps=3 format=3 uid="uid://dutv267w84lh"]
 
 [ext_resource type="Script" path="res://hud.gd" id="1_24d7y"]
+[ext_resource type="PackedScene" uid="uid://dnjejbl8ptjxm" path="res://pause_menu.tscn" id="2_6bgqf"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_24d7y")
@@ -35,9 +36,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -79.0
-offset_top = -168.0
+offset_top = -180.0
 offset_right = 79.0
-offset_bottom = -72.0
+offset_bottom = -84.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 4
@@ -55,5 +56,25 @@ offset_top = 6.0
 offset_bottom = 70.0
 grow_horizontal = 2
 
+[node name="SettingsButton" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -208.0
+offset_top = -80.0
+offset_right = -15.0
+offset_bottom = -5.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 48
+text = "Settings"
+
+[node name="PauseMenu" parent="." instance=ExtResource("2_6bgqf")]
+visible = false
+
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="timeout" from="MessageTimer" to="." method="_on_message_timer_timeout"]
+[connection signal="pressed" from="SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="resume_game" from="PauseMenu" to="." method="_on_pause_menu_resume_game"]

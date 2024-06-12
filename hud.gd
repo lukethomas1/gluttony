@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 signal start_game
+signal settings_button_pressed
 
 const bomb_texture = preload("res://assets/textures/bomb.png")
 
@@ -17,6 +18,7 @@ func show_game_over():
 	$MessageLabel.text = "Eat or Be Eaten"
 	$MessageLabel.show()
 	$StartButton.show()
+	$SettingsButton.show()
 
 
 func update_score(score):
@@ -25,6 +27,8 @@ func update_score(score):
 
 func _on_start_button_pressed():
 	$StartButton.hide()
+	$SettingsButton.hide()
+	$PauseMenu.hide()
 	start_game.emit()
 
 
@@ -43,3 +47,18 @@ func _on_num_bombs_changed(num_bombs: int):
 	elif num_bombs < num_bombs_showing:
 		for i in range(num_bombs_showing - num_bombs):
 			$BombContainer.get_child(i).queue_free()
+
+
+func _on_settings_button_pressed():
+	toggle_pause_menu()
+
+
+func _on_pause_menu_resume_game():
+	toggle_pause_menu()
+
+
+func toggle_pause_menu():
+	$PauseMenu.visible = !$PauseMenu.visible
+	$MessageLabel.visible = !$MessageLabel.visible
+	$ScoreLabel.visible = !$ScoreLabel.visible
+	$StartButton.visible = !$StartButton.visible
