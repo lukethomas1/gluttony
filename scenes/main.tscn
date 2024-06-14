@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b65k3ent64b2n"]
+[gd_scene load_steps=16 format=3 uid="uid://b65k3ent64b2n"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_leb16"]
 [ext_resource type="PackedScene" uid="uid://ba5o8byh6dddb" path="res://scenes/player.tscn" id="2_jn2rh"]
@@ -10,6 +10,10 @@
 [ext_resource type="PackedScene" uid="uid://btjrxknvsqn8m" path="res://scenes/submit_score_box.tscn" id="8_8m0t1"]
 [ext_resource type="PackedScene" uid="uid://dl2yc2ofs3qmo" path="res://scenes/leaderboard.tscn" id="9_x3lnn"]
 [ext_resource type="PackedScene" uid="uid://c5orn7jewfn3l" path="res://scenes/instructions.tscn" id="10_t7gtf"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="11_4jshe"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="12_6o8uj"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="13_wdodc"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="14_0skty"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_bxlmm"]
 playback_mode = 1
@@ -56,6 +60,65 @@ visible = false
 [node name="Leaderboard" parent="." instance=ExtResource("9_x3lnn")]
 
 [node name="Instructions" parent="." instance=ExtResource("10_t7gtf")]
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("11_4jshe")
+track_in_editor = true
+
+[node name="GameState" type="Node" parent="StateChart"]
+script = ExtResource("12_6o8uj")
+initial_state = NodePath("MainMenu")
+
+[node name="MainMenu" type="Node" parent="StateChart/GameState"]
+script = ExtResource("13_wdodc")
+
+[node name="MainMenuToGetReady" type="Node" parent="StateChart/GameState/MainMenu"]
+script = ExtResource("14_0skty")
+to = NodePath("../../GetReady")
+event = &"start"
+delay_in_seconds = "0.0"
+
+[node name="GetReady" type="Node" parent="StateChart/GameState"]
+script = ExtResource("13_wdodc")
+
+[node name="GetReadyToPlaying" type="Node" parent="StateChart/GameState/GetReady"]
+script = ExtResource("14_0skty")
+to = NodePath("../../Playing")
+event = &"playing"
+delay_in_seconds = "0.0"
+
+[node name="Playing" type="Node" parent="StateChart/GameState"]
+script = ExtResource("13_wdodc")
+
+[node name="PlayingToPaused" type="Node" parent="StateChart/GameState/Playing"]
+script = ExtResource("14_0skty")
+to = NodePath("../../Paused")
+event = &"pause"
+delay_in_seconds = "0.0"
+
+[node name="PlayingToGameOver" type="Node" parent="StateChart/GameState/Playing"]
+script = ExtResource("14_0skty")
+to = NodePath("../../GameOver")
+event = &"game_over"
+delay_in_seconds = "0.0"
+
+[node name="Paused" type="Node" parent="StateChart/GameState"]
+script = ExtResource("13_wdodc")
+
+[node name="PausedToPlaying" type="Node" parent="StateChart/GameState/Paused"]
+script = ExtResource("14_0skty")
+to = NodePath("../../Playing")
+event = &"unpause"
+delay_in_seconds = "0.0"
+
+[node name="GameOver" type="Node" parent="StateChart/GameState"]
+script = ExtResource("13_wdodc")
+
+[node name="GameOverToMainMenu" type="Node" parent="StateChart/GameState/GameOver"]
+script = ExtResource("14_0skty")
+to = NodePath("../../MainMenu")
+event = &"to_menu"
+delay_in_seconds = "0.0"
 
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]

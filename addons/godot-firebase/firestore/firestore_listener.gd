@@ -29,7 +29,7 @@ func _process(delta: float) -> void:
 
 func _check_for_server_updates() -> void:
 	var executor = func():
-					var doc = await _collection.get_doc(_doc_name, false, true)
+					var doc = await _collection.get_doc(_doc_name)
 					if doc == null:
 						set_process(false) # Document was deleted out from under us, so stop updating
 	
