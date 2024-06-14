@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dl2yc2ofs3qmo"]
 
-[ext_resource type="Script" path="res://leaderboard.gd" id="1_jddbr"]
+[ext_resource type="Script" path="res://scripts/leaderboard.gd" id="1_jddbr"]
 [ext_resource type="Texture2D" uid="uid://csjwysgwy0dmb" path="res://assets/textures/arrow_rotate.png" id="2_ygmg5"]
 
 [node name="Leaderboard" type="CanvasLayer"]

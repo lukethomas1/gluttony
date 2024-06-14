@@ -1,8 +1,8 @@
 extends Node
 
-const mob_script = preload("res://mob.gd")
+const mob_script = preload("res://scripts/mob.gd")
 
-const powerup_scene = preload("res://powerup.tscn")
+const powerup_scene = preload("res://scenes/powerup.tscn")
 
 var screen_size:Vector2
 var player_score:float

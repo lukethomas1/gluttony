@@ -4,8 +4,8 @@ signal grow(score:int)
 signal game_over
 signal num_bombs_changed(num_bombs:int)
 
-const Mob = preload("res://mob.gd")
-const Powerup = preload("res://powerup.gd")
+const Mob = preload("res://scripts/mob.gd")
+const Powerup = preload("res://scripts/powerup.gd")
 
 var score:float
 var num_bombs:int = 0

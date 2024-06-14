@@ -5,7 +5,7 @@ signal refresh_requested
 enum TIME_TAB {ALL_TIME, MONTHLY, WEEKLY, THREE_DAY, DAILY}
 const COLLECTION_ID = "LeaderboardV1"
 
-const score_entry_scene = preload("res://score_entry.tscn")
+const score_entry_scene = preload("res://scenes/score_entry.tscn")
 
 var current_tab = 0
 

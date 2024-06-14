@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://btjrxknvsqn8m"]
 
-[ext_resource type="Script" path="res://submit_score_box.gd" id="1_kw6hy"]
-[ext_resource type="Theme" uid="uid://dqrodr3lbqq3v" path="res://submit_score_box.tres" id="1_t68ws"]
+[ext_resource type="Script" path="res://scripts/submit_score_box.gd" id="1_kw6hy"]
+[ext_resource type="Theme" uid="uid://dqrodr3lbqq3v" path="res://scenes/submit_score_box.tres" id="1_t68ws"]
 
 [node name="SubmitScoreBox" type="CanvasLayer"]
 script = ExtResource("1_kw6hy")

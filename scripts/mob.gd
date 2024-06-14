@@ -1,7 +1,7 @@
 extends RigidBody2D
 
 
-const mob_scene: PackedScene = preload("res://mob.tscn")
+const mob_scene: PackedScene = preload("res://scenes/mob.tscn")
 
 const mob_text_red_body = preload("res://assets/textures/red_body_square.png")
 const mob_text_red_eye = preload("res://assets/textures/face_f.png")
