@@ -21,3 +21,7 @@ func _on_name_input_text_changed(new_text):
 
 func _on_submit_button_pressed():
 	submit_score.emit()
+
+
+func get_player_name():
+	return %NameInput.text

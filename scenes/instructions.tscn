@@ -16,10 +16,10 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -583.0
-offset_top = 170.0
+offset_left = -778.0
+offset_top = 400.0
 offset_right = -135.0
-offset_bottom = 481.0
+offset_bottom = 820.0
 grow_horizontal = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
@@ -50,6 +50,10 @@ text = "2. Avoid the red squares"
 layout_mode = 2
 text = "3. Left click to use a bomb"
 
+[node name="Label6" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "4. Press 'space' to pause"
+
 [node name="Label5" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "4. Press 'esc' to quit game"
+text = "5. Press 'esc' to quit game"

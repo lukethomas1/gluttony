@@ -58,10 +58,10 @@ func scale_player_size():
 	$CollisionShape2D.scale = new_scale
 	$Body.scale = new_scale
 	$Eyes.scale = new_scale
-	print("Player scale: %s" % str(new_scale))
 
 
 func start():
+	position = get_viewport().get_visible_rect().size / 2 # middle of screen using pixel coordinates
 	score = Calc.default_score
 	scale_player_size()
 	show()

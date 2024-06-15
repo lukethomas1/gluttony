@@ -20,8 +20,6 @@ func _ready():
 
 	Firebase.Auth.auth_request.connect(_on_auth_request)
 	Firebase.Auth.login_anonymous()
-	pause_mouse_pos = DisplayServer.mouse_get_position()
-	print("Viewport Resolution is: ", get_viewport().get_visible_rect().size)
 
 
 func handle_window_resize():
@@ -58,7 +56,7 @@ func game_over():
 
 
 func _on_submit_score():
-	var player_name = (get_node("SubmitScoreBox/PanelContainer/MarginContainer/VBoxContainer/NameInput") as LineEdit).text
+	var player_name = $SubmitScoreBox.get_player_name()
 	var score = int(player_score - Calc.default_score)
 	var result = await $Leaderboard.submit_score(player_name, score)
 
@@ -124,6 +122,10 @@ func _on_get_ready_state_entered():
 	$Leaderboard.hide()
 	$SubmitScoreBox.hide()
 	$Instructions.hide()
+
+
+func _on_get_ready_state_exited():
+	Input.warp_mouse(DisplayServer.screen_get_size() / 2) # middle of screen using monitor resolution
 
 
 func _on_playing_state_entered():
