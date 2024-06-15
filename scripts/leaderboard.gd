@@ -1,4 +1,4 @@
-extends CanvasLayer
+extends Control
 
 signal refresh_requested
 
@@ -9,7 +9,8 @@ const score_entry_scene = preload("res://scenes/score_entry.tscn")
 
 var current_tab = 0
 
-var ONE_DAY_IN_SEC:int = 86400
+const ONE_DAY_IN_SEC:int = 86400
+const max_scores = 30
 
 
 func build_query(tab:int):
@@ -33,7 +34,7 @@ func build_query(tab:int):
 	var query = FirestoreQuery.new().from(COLLECTION_ID)
 	if tab != TIME_TAB.ALL_TIME:
 		query = query.where("datetime", FirestoreQuery.OPERATOR.GREATER_THAN, greater_than_time)
-	query = query.order_by("score", FirestoreQuery.DIRECTION.DESCENDING).limit(24)
+	query = query.order_by("score", FirestoreQuery.DIRECTION.DESCENDING).limit(max_scores)
 	return query
 
 
@@ -78,6 +79,8 @@ func remove_all():
 
 func add_score(player_name: String, score: int):
 	var score_entry = score_entry_scene.instantiate()
+	score_entry.get_node("NameLabel").set("theme_override_font_sizes/font_size", 32)
+	score_entry.get_node("ScoreLabel").set("theme_override_font_sizes/font_size", 32)
 	score_entry.get_node("NameLabel").text = player_name
 	score_entry.get_node("ScoreLabel").text = str(score)
 	%ScoresContainer.add_child(score_entry)

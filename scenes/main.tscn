@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b65k3ent64b2n"]
+[gd_scene load_steps=17 format=3 uid="uid://b65k3ent64b2n"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_leb16"]
 [ext_resource type="PackedScene" uid="uid://ba5o8byh6dddb" path="res://scenes/player.tscn" id="2_jn2rh"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="12_6o8uj"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="13_wdodc"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="14_0skty"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="15_jif3q"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_bxlmm"]
 playback_mode = 1
@@ -24,13 +25,12 @@ stream_1/stream = ExtResource("5_0ty34")
 stream_1/weight = 1.0
 
 [node name="Main" type="Node"]
+process_mode = 3
 script = ExtResource("1_leb16")
 
 [node name="MobTimer" type="Timer" parent="."]
+process_mode = 1
 wait_time = 0.25
-
-[node name="StartTimer" type="Timer" parent="."]
-one_shot = true
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_mw80r")
@@ -50,7 +50,8 @@ stream = SubResource("AudioStreamRandomizer_bxlmm")
 bus = &"Effects"
 
 [node name="Player" parent="." instance=ExtResource("2_jn2rh")]
-position = Vector2(587, 283)
+process_mode = 1
+position = Vector2(1920, 1088)
 
 [node name="HUD" parent="." instance=ExtResource("4_b5xol")]
 
@@ -61,7 +62,20 @@ visible = false
 
 [node name="Instructions" parent="." instance=ExtResource("10_t7gtf")]
 
+[node name="StateChartDebugger" parent="." instance=ExtResource("15_jif3q")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 760.0
+offset_top = 64.0
+offset_right = 1165.0
+offset_bottom = 518.0
+grow_horizontal = 1
+grow_vertical = 1
+initial_node_to_watch = NodePath("../StateChart")
+
 [node name="StateChart" type="Node" parent="."]
+unique_name_in_owner = true
 script = ExtResource("11_4jshe")
 track_in_editor = true
 
@@ -72,7 +86,7 @@ initial_state = NodePath("MainMenu")
 [node name="MainMenu" type="Node" parent="StateChart/GameState"]
 script = ExtResource("13_wdodc")
 
-[node name="MainMenuToGetReady" type="Node" parent="StateChart/GameState/MainMenu"]
+[node name="To GetReady" type="Node" parent="StateChart/GameState/MainMenu"]
 script = ExtResource("14_0skty")
 to = NodePath("../../GetReady")
 event = &"start"
@@ -81,22 +95,21 @@ delay_in_seconds = "0.0"
 [node name="GetReady" type="Node" parent="StateChart/GameState"]
 script = ExtResource("13_wdodc")
 
-[node name="GetReadyToPlaying" type="Node" parent="StateChart/GameState/GetReady"]
+[node name="To Playing" type="Node" parent="StateChart/GameState/GetReady"]
 script = ExtResource("14_0skty")
 to = NodePath("../../Playing")
-event = &"playing"
-delay_in_seconds = "0.0"
+delay_in_seconds = "1.0"
 
 [node name="Playing" type="Node" parent="StateChart/GameState"]
 script = ExtResource("13_wdodc")
 
-[node name="PlayingToPaused" type="Node" parent="StateChart/GameState/Playing"]
+[node name="To Paused" type="Node" parent="StateChart/GameState/Playing"]
 script = ExtResource("14_0skty")
 to = NodePath("../../Paused")
-event = &"pause"
+event = &"toggle_pause"
 delay_in_seconds = "0.0"
 
-[node name="PlayingToGameOver" type="Node" parent="StateChart/GameState/Playing"]
+[node name="To GameOver" type="Node" parent="StateChart/GameState/Playing"]
 script = ExtResource("14_0skty")
 to = NodePath("../../GameOver")
 event = &"game_over"
@@ -105,26 +118,41 @@ delay_in_seconds = "0.0"
 [node name="Paused" type="Node" parent="StateChart/GameState"]
 script = ExtResource("13_wdodc")
 
-[node name="PausedToPlaying" type="Node" parent="StateChart/GameState/Paused"]
+[node name="To Playing" type="Node" parent="StateChart/GameState/Paused"]
+script = ExtResource("14_0skty")
+to = NodePath("../../Unpausing")
+event = &"toggle_pause"
+delay_in_seconds = "0.0"
+
+[node name="Unpausing" type="Node" parent="StateChart/GameState"]
+script = ExtResource("13_wdodc")
+
+[node name="To Playing" type="Node" parent="StateChart/GameState/Unpausing"]
 script = ExtResource("14_0skty")
 to = NodePath("../../Playing")
-event = &"unpause"
-delay_in_seconds = "0.0"
+delay_in_seconds = "1.0"
 
 [node name="GameOver" type="Node" parent="StateChart/GameState"]
 script = ExtResource("13_wdodc")
 
-[node name="GameOverToMainMenu" type="Node" parent="StateChart/GameState/GameOver"]
+[node name="To MainMenu" type="Node" parent="StateChart/GameState/GameOver"]
 script = ExtResource("14_0skty")
 to = NodePath("../../MainMenu")
-event = &"to_menu"
-delay_in_seconds = "0.0"
+delay_in_seconds = "1.0"
 
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
-[connection signal="timeout" from="StartTimer" to="." method="_on_start_timer_timeout"]
 [connection signal="game_over" from="Player" to="." method="game_over"]
 [connection signal="grow" from="Player" to="." method="_on_player_grow"]
 [connection signal="num_bombs_changed" from="Player" to="HUD" method="_on_num_bombs_changed"]
+[connection signal="resume_game" from="HUD" to="." method="_on_hud_resume_game"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
 [connection signal="submit_score" from="SubmitScoreBox" to="." method="_on_submit_score"]
 [connection signal="refresh_requested" from="Leaderboard" to="." method="load_leaderboard"]
+[connection signal="state_entered" from="StateChart/GameState/MainMenu" to="." method="_on_main_menu_state_entered"]
+[connection signal="state_entered" from="StateChart/GameState/GetReady" to="." method="_on_get_ready_state_entered"]
+[connection signal="state_entered" from="StateChart/GameState/Playing" to="." method="_on_playing_state_entered"]
+[connection signal="state_input" from="StateChart/GameState/Playing" to="." method="_on_playing_state_input"]
+[connection signal="state_entered" from="StateChart/GameState/Paused" to="." method="_on_paused_state_entered"]
+[connection signal="state_entered" from="StateChart/GameState/Unpausing" to="." method="_on_unpausing_state_entered"]
+[connection signal="state_processing" from="StateChart/GameState/Unpausing" to="." method="_on_unpausing_state_processing"]
+[connection signal="state_entered" from="StateChart/GameState/GameOver" to="." method="_on_game_over_state_entered"]

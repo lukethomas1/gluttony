@@ -50,8 +50,8 @@ func set_bus_volume(bus_id:int, value:float):
 
 
 func _on_resume_button_pressed():
-	resume_game.emit()
 	save_settings()
+	resume_game.emit()
 
 func _on_quit_button_pressed():
 	get_tree().quit()

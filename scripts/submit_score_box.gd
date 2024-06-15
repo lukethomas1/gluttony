@@ -8,6 +8,10 @@ func _ready():
 	%SubmitButton.disabled = true
 
 
+func set_score_label(text):
+	%ScoreLabel.text = text
+
+
 func _on_name_input_text_changed(new_text):
 	if new_text.length() > 0:
 		%SubmitButton.disabled = false

@@ -17,14 +17,6 @@ func _ready():
 	hide()
 
 
-func _input(event):
-	if event is InputEventMouseMotion:
-		position = event.position
-	elif event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed && num_bombs > 0:
-			do_bomb()
-
-
 func _on_body_entered(_body):
 	var mob = _body as Mob
 	if mob != null:
@@ -66,6 +58,7 @@ func scale_player_size():
 	$CollisionShape2D.scale = new_scale
 	$Body.scale = new_scale
 	$Eyes.scale = new_scale
+	print("Player scale: %s" % str(new_scale))
 
 
 func start():

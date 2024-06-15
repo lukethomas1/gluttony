@@ -2,6 +2,7 @@ extends CanvasLayer
 
 signal start_game
 signal settings_button_pressed
+signal resume_game
 
 const bomb_texture = preload("res://assets/textures/bomb.png")
 
@@ -9,14 +10,18 @@ const bomb_texture = preload("res://assets/textures/bomb.png")
 func show_message(text):
 	$MessageLabel.text = text
 	$MessageLabel.show()
-	$MessageTimer.start()
+
+
+func hide_message():
+	$MessageLabel.hide()
 
 
 func show_game_over():
 	show_message("Game Over")
-	await $MessageTimer.timeout
-	$MessageLabel.text = "Eat or Be Eaten"
-	$MessageLabel.show()
+
+
+func show_main_menu():
+	show_message("Eat or Be Eaten")
 	$StartButton.show()
 	$SettingsButton.show()
 
@@ -30,10 +35,6 @@ func _on_start_button_pressed():
 	$SettingsButton.hide()
 	$PauseMenu.hide()
 	start_game.emit()
-
-
-func _on_message_timer_timeout():
-	$MessageLabel.hide()
 
 
 func _on_num_bombs_changed(num_bombs: int):
@@ -54,11 +55,17 @@ func _on_settings_button_pressed():
 
 
 func _on_pause_menu_resume_game():
-	toggle_pause_menu()
+	hide_pause_menu()
+	resume_game.emit()
+
+
+func show_pause_menu():
+	$PauseMenu.visible = true
+
+
+func hide_pause_menu():
+	$PauseMenu.visible = false
 
 
 func toggle_pause_menu():
 	$PauseMenu.visible = !$PauseMenu.visible
-	$MessageLabel.visible = !$MessageLabel.visible
-	$ScoreLabel.visible = !$ScoreLabel.visible
-	$StartButton.visible = !$StartButton.visible

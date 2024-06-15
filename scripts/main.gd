@@ -6,6 +6,7 @@ const powerup_scene = preload("res://scenes/powerup.tscn")
 
 var screen_size:Vector2
 var player_score:float
+var pause_mouse_pos:Vector2
 
 var login_failures = 0
 
@@ -19,6 +20,8 @@ func _ready():
 
 	Firebase.Auth.auth_request.connect(_on_auth_request)
 	Firebase.Auth.login_anonymous()
+	pause_mouse_pos = DisplayServer.mouse_get_position()
+	print("Viewport Resolution is: ", get_viewport().get_visible_rect().size)
 
 
 func handle_window_resize():
@@ -30,6 +33,8 @@ func _input(event):
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_ESCAPE:
 			get_tree().quit()
+		elif event.keycode == KEY_SPACE:
+			%StateChart.send_event("toggle_pause")
 
 
 func _on_auth_request(result_code, result_content):
@@ -45,33 +50,11 @@ func _on_auth_request(result_code, result_content):
 
 
 func new_game():
-	get_tree().call_group(&"mobs", &"queue_free")
-	player_score = Calc.default_score
-	$StartTimer.start()
-	$HUD.update_score(player_score - Calc.default_score)
-	$HUD.show_message("Get Ready")
-	$Player.start()
-	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
-	$Music.play()
-
-	$Leaderboard.hide()
-	$SubmitScoreBox.hide()
-	$Instructions.hide()
+	%StateChart.send_event("start")
 
 
 func game_over():
-	$MobTimer.stop()
-	$HUD.show_game_over()
-	get_tree().call_group("mobs", "die")
-	get_tree().call_group("powerups", "die")
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	$Music.stop()
-	$DeathSound.play()
-
-	$Leaderboard.show()
-	get_node("SubmitScoreBox/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ScoreLabel").text = str(int(player_score - Calc.default_score))
-	$SubmitScoreBox.show()
-	$Instructions.show()
+	%StateChart.send_event("game_over")
 
 
 func _on_submit_score():
@@ -115,10 +98,6 @@ func _on_mob_timer_timeout():
 	add_child(mob)
 
 
-func _on_start_timer_timeout():
-	$MobTimer.start()
-
-
 func create_bomb():
 	var powerup_spawn_pos_x = randf_range(200, screen_size[0] - 200)
 	var powerup_spawn_pos_y = randf_range(100, screen_size[1] - 100)
@@ -127,3 +106,76 @@ func create_bomb():
 	powerup.position = Vector2(powerup_spawn_pos_x, powerup_spawn_pos_y)
 
 	add_child(powerup)
+
+
+func _on_hud_resume_game():
+	%StateChart.send_event("toggle_pause")
+
+
+func _on_get_ready_state_entered():
+	get_tree().call_group(&"mobs", &"queue_free")
+	player_score = Calc.default_score
+	$HUD.update_score(player_score - Calc.default_score)
+	$HUD.show_message("Get Ready")
+	$Player.start()
+	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
+	$Music.play()
+
+	$Leaderboard.hide()
+	$SubmitScoreBox.hide()
+	$Instructions.hide()
+
+
+func _on_playing_state_entered():
+	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
+	get_tree().paused = false
+	$HUD.hide_message()
+	$MobTimer.start()
+
+
+func _on_game_over_state_entered():
+	$MobTimer.stop()
+	$HUD.show_game_over()
+	$Music.stop()
+	$DeathSound.play()
+
+
+func _on_game_over_state_exited():
+	$SubmitScoreBox.set_score_label(str(int(player_score - Calc.default_score)))
+	$SubmitScoreBox.show()
+
+
+func _on_main_menu_state_entered():
+	get_tree().call_group("mobs", "die")
+	get_tree().call_group("powerups", "die")
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	$Leaderboard.show()
+	$Instructions.show()
+	$HUD.show_main_menu()
+
+
+func _on_paused_state_entered():
+	# Need to subtract window position to support multiple monitor setups
+	# because Input.warp_mouse(Vector2i) uses game-window coordinates
+	pause_mouse_pos = DisplayServer.mouse_get_position() - DisplayServer.window_get_position()
+	$HUD.show_pause_menu()
+	get_tree().paused = true
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
+
+func _on_unpausing_state_entered():
+	$HUD.hide_pause_menu()
+	$HUD.show_message("Unpausing")
+	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
+
+
+func _on_playing_state_input(event):
+	if event is InputEventMouseMotion:
+		$Player.position = event.position
+	elif event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT && event.pressed && $Player.num_bombs > 0:
+			$Player.do_bomb()
+
+
+func _on_unpausing_state_processing(_delta):
+	Input.warp_mouse(pause_mouse_pos)
