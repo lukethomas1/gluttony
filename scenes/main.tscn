@@ -70,7 +70,6 @@ offset_right = 1165.0
 offset_bottom = 518.0
 grow_horizontal = 1
 grow_vertical = 1
-enabled = false
 initial_node_to_watch = NodePath("../StateChart")
 
 [node name="StateChart" type="Node" parent="."]
@@ -86,6 +85,27 @@ initial_state = NodePath("MainMenu")
 script = ExtResource("13_wdodc")
 
 [node name="To GetReady" type="Node" parent="StateChart/GameState/MainMenu"]
+script = ExtResource("14_0skty")
+to = NodePath("../../GetReady")
+event = &"start"
+delay_in_seconds = "0.0"
+
+[node name="To MenuPause" type="Node" parent="StateChart/GameState/MainMenu"]
+script = ExtResource("14_0skty")
+to = NodePath("../../MenuPause")
+event = &"toggle_menupause"
+delay_in_seconds = "0.0"
+
+[node name="MenuPause" type="Node" parent="StateChart/GameState"]
+script = ExtResource("13_wdodc")
+
+[node name="To MainMenu" type="Node" parent="StateChart/GameState/MenuPause"]
+script = ExtResource("14_0skty")
+to = NodePath("../../MainMenu")
+event = &"toggle_menupause"
+delay_in_seconds = "0.0"
+
+[node name="To GetReady" type="Node" parent="StateChart/GameState/MenuPause"]
 script = ExtResource("14_0skty")
 to = NodePath("../../GetReady")
 event = &"start"
@@ -148,6 +168,7 @@ delay_in_seconds = "1.0"
 [connection signal="submit_score" from="SubmitScoreBox" to="." method="_on_submit_score"]
 [connection signal="refresh_requested" from="Leaderboard" to="." method="load_leaderboard"]
 [connection signal="state_entered" from="StateChart/GameState/MainMenu" to="." method="_on_main_menu_state_entered"]
+[connection signal="state_entered" from="StateChart/GameState/MenuPause" to="." method="_on_menu_pause_state_entered"]
 [connection signal="state_entered" from="StateChart/GameState/GetReady" to="." method="_on_get_ready_state_entered"]
 [connection signal="state_exited" from="StateChart/GameState/GetReady" to="." method="_on_get_ready_state_exited"]
 [connection signal="state_entered" from="StateChart/GameState/Playing" to="." method="_on_playing_state_entered"]

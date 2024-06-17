@@ -53,7 +53,3 @@ text = "3. Left click to use a bomb"
 [node name="Label6" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "4. Press 'space' to pause"
-
-[node name="Label5" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "5. Press 'esc' to quit game"

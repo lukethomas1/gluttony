@@ -24,6 +24,7 @@ func show_main_menu():
 	show_message("Eat or Be Eaten")
 	$StartButton.show()
 	$SettingsButton.show()
+	$PauseMenu.hide()
 
 
 func update_score(score):
@@ -51,21 +52,27 @@ func _on_num_bombs_changed(num_bombs: int):
 
 
 func _on_settings_button_pressed():
-	toggle_pause_menu()
+	%StateChart.send_event("toggle_pause")
+	%StateChart.send_event("toggle_menupause")
 
 
 func _on_pause_menu_resume_game():
-	hide_pause_menu()
 	resume_game.emit()
 
 
 func show_pause_menu():
-	$PauseMenu.visible = true
+	$PauseMenu.show()
 
 
 func hide_pause_menu():
-	$PauseMenu.visible = false
+	$PauseMenu.hide()
 
 
-func toggle_pause_menu():
-	$PauseMenu.visible = !$PauseMenu.visible
+func show_menupause_menu():
+	$PauseMenu.show()
+	$MessageLabel.hide()
+
+
+func hide_menupause_menu():
+	$PauseMenu.hide()
+	$MessageLabel.show()

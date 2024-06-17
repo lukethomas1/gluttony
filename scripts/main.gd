@@ -10,7 +10,7 @@ var pause_mouse_pos:Vector2
 
 var login_failures = 0
 
-const COLLECTION_ID = "LeaderboardV1"
+const COLLECTION_ID = "LeaderboardV2"
 
 
 func _ready():
@@ -30,9 +30,11 @@ func handle_window_resize():
 func _input(event):
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_ESCAPE:
-			get_tree().quit()
+			%StateChart.send_event("toggle_pause")
+			%StateChart.send_event("toggle_menupause")
 		elif event.keycode == KEY_SPACE:
 			%StateChart.send_event("toggle_pause")
+			%StateChart.send_event("toggle_menupause")
 
 
 func _on_auth_request(result_code, result_content):
@@ -108,6 +110,7 @@ func create_bomb():
 
 func _on_hud_resume_game():
 	%StateChart.send_event("toggle_pause")
+	%StateChart.send_event("toggle_menupause")
 
 
 func _on_get_ready_state_entered():
@@ -182,3 +185,7 @@ func _on_playing_state_input(event):
 
 func _on_unpausing_state_processing(_delta):
 	Input.warp_mouse(pause_mouse_pos)
+
+
+func _on_menu_pause_state_entered():
+	$HUD.show_menupause_menu()
