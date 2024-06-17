@@ -24,6 +24,7 @@ func show_main_menu():
 	show_message("Eat or Be Eaten")
 	$StartButton.show()
 	$SettingsButton.show()
+	$QuitButton.show()
 	$PauseMenu.hide()
 
 
@@ -34,6 +35,7 @@ func update_score(score):
 func _on_start_button_pressed():
 	$StartButton.hide()
 	$SettingsButton.hide()
+	$QuitButton.hide()
 	$PauseMenu.hide()
 	start_game.emit()
 
@@ -76,3 +78,7 @@ func show_menupause_menu():
 func hide_menupause_menu():
 	$PauseMenu.hide()
 	$MessageLabel.show()
+
+
+func _on_quit_button_pressed():
+	get_tree().quit()
