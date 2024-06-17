@@ -103,7 +103,7 @@ func create_bomb():
 	var powerup = powerup_scene.instantiate()
 	powerup.position = Vector2(powerup_spawn_pos_x, powerup_spawn_pos_y)
 
-	add_child(powerup)
+	call_deferred("add_child", powerup)
 
 
 func _on_hud_resume_game():
@@ -132,6 +132,7 @@ func _on_playing_state_entered():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 	get_tree().paused = false
 	$HUD.hide_message()
+	$MobTimer.wait_time = Calc.mob_spawn_timer_ms
 	$MobTimer.start()
 
 

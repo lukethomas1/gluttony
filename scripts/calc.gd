@@ -2,9 +2,17 @@
 class_name Calc
 
 
-const default_score:float = 30.0
-const bomb_spawn_frequency:int = 100
 const icon_width_pixels = 80
+
+const default_score:float = 30.0
+const mob_spawn_timer_ms:float = 0.25
+const bomb_spawn_frequency:int = 100
+
+
+const mob_velocity_avg:int = 200
+const mob_velocity_variance:int = 50
+const mob_velocity_max:int = mob_velocity_avg + mob_velocity_variance
+const mob_velocity_min:int = mob_velocity_avg - mob_velocity_variance
 
 
 # Calc mob and player size, based on the mob size or player score
@@ -16,7 +24,7 @@ static func calc_scale(size:float):
 # Calc mob velocity, goes up as player_score gets higher
 static func calc_mob_velocity(player_score:float):
     var multiplier = 1 + log(player_score / default_score)
-    var horizontal_velocity = randf_range(150.0, 250.0) * multiplier
+    var horizontal_velocity = randf_range(mob_velocity_min, mob_velocity_max) * multiplier
     return Vector2(horizontal_velocity, 0.0)
 
 

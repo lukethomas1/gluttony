@@ -17,6 +17,7 @@ static func create_new_mob(player_score):
 	var new_mob = mob_scene.instantiate()
 	var mob_size = int(player_score * randf_range(0.5, 1.5))
 	new_mob.size = mob_size
+	new_mob.z_index = 1
 	new_mob.adjust_to_score(player_score)
 	new_mob.scale_mob_size()
 	return new_mob
@@ -31,6 +32,7 @@ func scale_mob_size():
 
 func adjust_to_score(player_score):
 	if red && size < player_score:
+		z_index = 0
 		$Body.texture = mob_text_green_body
 		$Eyes.texture = mob_text_green_eye
 		red = false

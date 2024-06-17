@@ -30,7 +30,6 @@ script = ExtResource("1_leb16")
 
 [node name="MobTimer" type="Timer" parent="."]
 process_mode = 1
-wait_time = 0.25
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_mw80r")
