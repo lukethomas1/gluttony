@@ -1,21 +1,33 @@
-[gd_scene load_steps=3 format=3 uid="uid://btjrxknvsqn8m"]
+[gd_scene load_steps=4 format=3 uid="uid://btjrxknvsqn8m"]
 
 [ext_resource type="Script" path="res://scripts/submit_score_box.gd" id="1_kw6hy"]
 [ext_resource type="Theme" uid="uid://dqrodr3lbqq3v" path="res://scenes/submit_score_box.tres" id="1_t68ws"]
 
-[node name="SubmitScoreBox" type="CanvasLayer"]
+[sub_resource type="Theme" id="Theme_jwqqn"]
+Button/font_sizes/font_size = 64
+Label/font_sizes/font_size = 64
+LineEdit/font_sizes/font_size = 64
+
+[node name="SubmitScoreBox" type="Control"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+theme = SubResource("Theme_jwqqn")
 script = ExtResource("1_kw6hy")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -792.0
-offset_top = -790.0
-offset_right = -144.0
-offset_bottom = -382.0
+offset_left = -658.0
+offset_top = 700.0
+offset_right = -8.0
+offset_bottom = 1108.0
 grow_horizontal = 0
 grow_vertical = 0
 
@@ -35,20 +47,17 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 64
 text = "Score:"
 
 [node name="ScoreLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
-theme_override_font_sizes/font_size = 64
 text = "0"
 
 [node name="NameInput" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 64
 placeholder_text = "Enter name"
 alignment = 1
 
@@ -60,7 +69,6 @@ unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 theme = ExtResource("1_t68ws")
-theme_override_font_sizes/font_size = 64
 text = "Submit"
 
 [connection signal="text_changed" from="PanelContainer/MarginContainer/VBoxContainer/NameInput" to="." method="_on_name_input_text_changed"]
