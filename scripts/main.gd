@@ -41,7 +41,7 @@ func _on_auth_request(result_code, result_content):
 	print("Auth request")
 	if result_code == 1:
 		print("Auth request succeeded")
-		$Leaderboard.load_leaderboard()
+		$HUD/Leaderboard.load_leaderboard()
 	else:
 		print("Login failed, code %s, message: %s" % [str(result_code), str(result_content)])
 		login_failures += 1
@@ -58,14 +58,14 @@ func game_over():
 
 
 func _on_submit_score():
-	var player_name = $SubmitScoreBox.get_player_name()
+	var player_name = $HUD/SubmitScoreBox.get_player_name()
 	var score = int(player_score - Calc.default_score)
-	var result = await $Leaderboard.submit_score(player_name, score)
+	var result = await $HUD/Leaderboard.submit_score(player_name, score)
 
 	if result != null:
 		print("Submit succeeded")
-		$SubmitScoreBox.hide()
-		$Leaderboard.load_leaderboard()
+		$HUD/SubmitScoreBox.hide()
+		$HUD/Leaderboard.load_leaderboard()
 
 
 func _on_player_grow(score:int):
@@ -122,9 +122,9 @@ func _on_get_ready_state_entered():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED_HIDDEN)
 	$Music.play()
 
-	$Leaderboard.hide()
-	$SubmitScoreBox.hide()
-	$Instructions.hide()
+	$HUD/Leaderboard.hide()
+	$HUD/SubmitScoreBox.hide()
+	$HUD/Instructions.hide()
 
 
 func _on_get_ready_state_exited():
@@ -147,16 +147,16 @@ func _on_game_over_state_entered():
 
 
 func _on_game_over_state_exited():
-	$SubmitScoreBox.set_score_label(str(int(player_score - Calc.default_score)))
-	$SubmitScoreBox.show()
+	$HUD/SubmitScoreBox.set_score_label(str(int(player_score - Calc.default_score)))
+	$HUD/SubmitScoreBox.show()
 
 
 func _on_main_menu_state_entered():
 	get_tree().call_group("mobs", "die")
 	get_tree().call_group("powerups", "die")
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	$Leaderboard.show()
-	$Instructions.show()
+	$HUD/Leaderboard.show()
+	$HUD/Instructions.show()
 	$HUD.show_main_menu()
 
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b65k3ent64b2n"]
+[gd_scene load_steps=14 format=3 uid="uid://b65k3ent64b2n"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_leb16"]
 [ext_resource type="PackedScene" uid="uid://ba5o8byh6dddb" path="res://scenes/player.tscn" id="2_jn2rh"]
@@ -7,9 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://dutv267w84lh" path="res://scenes/hud.tscn" id="4_b5xol"]
 [ext_resource type="AudioStream" uid="uid://f0bjl4prg5gc" path="res://assets/audio/effects/pacman_death.wav" id="4_p2b6q"]
 [ext_resource type="AudioStream" uid="uid://dowj4fa6c1udf" path="res://assets/audio/effects/eat_sound2.mp3" id="5_0ty34"]
-[ext_resource type="PackedScene" uid="uid://btjrxknvsqn8m" path="res://scenes/submit_score_box.tscn" id="8_8m0t1"]
-[ext_resource type="PackedScene" uid="uid://dl2yc2ofs3qmo" path="res://scenes/leaderboard.tscn" id="9_x3lnn"]
-[ext_resource type="PackedScene" uid="uid://c5orn7jewfn3l" path="res://scenes/instructions.tscn" id="10_t7gtf"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="11_4jshe"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="12_6o8uj"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="13_wdodc"]
@@ -54,13 +51,8 @@ position = Vector2(1920, 1088)
 
 [node name="HUD" parent="." instance=ExtResource("4_b5xol")]
 
-[node name="SubmitScoreBox" parent="." instance=ExtResource("8_8m0t1")]
-
-[node name="Leaderboard" parent="." instance=ExtResource("9_x3lnn")]
-
-[node name="Instructions" parent="." instance=ExtResource("10_t7gtf")]
-
 [node name="StateChartDebugger" parent="." instance=ExtResource("15_jif3q")]
+visible = false
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
@@ -70,6 +62,7 @@ offset_right = 1165.0
 offset_bottom = 518.0
 grow_horizontal = 1
 grow_vertical = 1
+enabled = false
 initial_node_to_watch = NodePath("../StateChart")
 
 [node name="StateChart" type="Node" parent="."]
@@ -120,6 +113,13 @@ to = NodePath("../../Playing")
 delay_in_seconds = "1.0"
 
 [node name="Playing" type="Node" parent="StateChart/GameState"]
+script = ExtResource("12_6o8uj")
+initial_state = NodePath("DefaultPhase")
+
+[node name="DefaultPhase" type="Node" parent="StateChart/GameState/Playing"]
+script = ExtResource("13_wdodc")
+
+[node name="DodgePhase" type="Node" parent="StateChart/GameState/Playing"]
 script = ExtResource("13_wdodc")
 
 [node name="To Paused" type="Node" parent="StateChart/GameState/Playing"]
@@ -165,8 +165,6 @@ delay_in_seconds = "1.0"
 [connection signal="num_bombs_changed" from="Player" to="HUD" method="_on_num_bombs_changed"]
 [connection signal="resume_game" from="HUD" to="." method="_on_hud_resume_game"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
-[connection signal="submit_score" from="SubmitScoreBox" to="." method="_on_submit_score"]
-[connection signal="refresh_requested" from="Leaderboard" to="." method="load_leaderboard"]
 [connection signal="state_entered" from="StateChart/GameState/MainMenu" to="." method="_on_main_menu_state_entered"]
 [connection signal="state_entered" from="StateChart/GameState/MenuPause" to="." method="_on_menu_pause_state_entered"]
 [connection signal="state_entered" from="StateChart/GameState/GetReady" to="." method="_on_get_ready_state_entered"]

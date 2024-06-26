@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://dutv267w84lh"]
+[gd_scene load_steps=6 format=3 uid="uid://dutv267w84lh"]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_24d7y"]
 [ext_resource type="PackedScene" uid="uid://dnjejbl8ptjxm" path="res://scenes/pause_menu.tscn" id="2_6bgqf"]
+[ext_resource type="PackedScene" uid="uid://c5orn7jewfn3l" path="res://scenes/instructions.tscn" id="3_13r4o"]
+[ext_resource type="PackedScene" uid="uid://dl2yc2ofs3qmo" path="res://scenes/leaderboard.tscn" id="4_fbj51"]
+[ext_resource type="PackedScene" uid="uid://btjrxknvsqn8m" path="res://scenes/submit_score_box.tscn" id="5_x0j8k"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_24d7y")
@@ -89,6 +92,12 @@ text = "Exit"
 
 [node name="PauseMenu" parent="." instance=ExtResource("2_6bgqf")]
 visible = false
+
+[node name="Instructions" parent="." instance=ExtResource("3_13r4o")]
+
+[node name="Leaderboard" parent="." instance=ExtResource("4_fbj51")]
+
+[node name="SubmitScoreBox" parent="." instance=ExtResource("5_x0j8k")]
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="SettingsButton" to="." method="_on_settings_button_pressed"]
