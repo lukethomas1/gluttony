@@ -10,7 +10,7 @@ const score_entry_scene = preload("res://scenes/score_entry.tscn")
 var current_tab = 0
 
 const ONE_DAY_IN_SEC:int = 86400
-const max_scores = 30
+const max_scores = 20
 
 
 func build_query(tab:int):

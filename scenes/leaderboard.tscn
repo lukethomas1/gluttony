@@ -30,10 +30,10 @@ anchor_bottom = 1.0
 offset_right = 400.0
 grow_vertical = 2
 theme = SubResource("Theme_2wa5n")
-theme_override_constants/margin_left = 32
-theme_override_constants/margin_top = 40
-theme_override_constants/margin_right = 32
-theme_override_constants/margin_bottom = 40
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
 layout_mode = 2
