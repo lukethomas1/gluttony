@@ -30,3 +30,7 @@ static func calc_mob_velocity(player_score:float):
 
 static func calc_growth_amount(_player_score, _mob_size):
     return 1
+
+
+static func calc_floater_growth_amount():
+    return 5

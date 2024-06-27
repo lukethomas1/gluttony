@@ -24,3 +24,5 @@ texture = ExtResource("2_ovft8")
 
 [node name="Eyes" type="Sprite2D" parent="."]
 texture = ExtResource("3_skohw")
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

@@ -2,6 +2,7 @@ extends Node
 
 const mob_script = preload("res://scripts/mob.gd")
 
+const floater_scene = preload("res://scenes/floater.tscn")
 const powerup_scene = preload("res://scenes/powerup.tscn")
 
 var screen_size:Vector2
@@ -72,6 +73,7 @@ func _on_player_grow(score:int):
 	player_score = score
 	if int(player_score - Calc.default_score) % Calc.bomb_spawn_frequency == 0:
 		create_bomb()
+		%StateChart.send_event("to_dodge")
 	$HUD.update_score(player_score - Calc.default_score)
 	$EatSound.play()
 
@@ -96,6 +98,11 @@ func _on_mob_timer_timeout():
 
 	# Spawn the mob by adding it to the Main scene.
 	add_child(mob)
+
+
+func _on_floater_timer_timeout():
+	var floater = floater_scene.instantiate()
+	call_deferred("add_child", floater)
 
 
 func create_bomb():
@@ -153,6 +160,7 @@ func _on_game_over_state_exited():
 
 func _on_main_menu_state_entered():
 	get_tree().call_group("mobs", "die")
+	get_tree().call_group("floaters", "die")
 	get_tree().call_group("powerups", "die")
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	$HUD/Leaderboard.show()
@@ -189,3 +197,13 @@ func _on_unpausing_state_processing(_delta):
 
 func _on_menu_pause_state_entered():
 	$HUD.show_menupause_menu()
+
+
+func _on_dodge_phase_state_entered():
+	$MobTimer.stop()
+	$FloaterTimer.start()
+
+
+func _on_default_phase_state_entered():
+	$FloaterTimer.stop()
+	$MobTimer.start()

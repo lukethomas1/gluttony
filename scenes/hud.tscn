@@ -98,6 +98,7 @@ visible = false
 [node name="Leaderboard" parent="." instance=ExtResource("4_fbj51")]
 
 [node name="SubmitScoreBox" parent="." instance=ExtResource("5_x0j8k")]
+visible = false
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="SettingsButton" to="." method="_on_settings_button_pressed"]

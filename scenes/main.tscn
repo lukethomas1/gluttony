@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b65k3ent64b2n"]
+[gd_scene load_steps=15 format=3 uid="uid://b65k3ent64b2n"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_leb16"]
 [ext_resource type="PackedScene" uid="uid://ba5o8byh6dddb" path="res://scenes/player.tscn" id="2_jn2rh"]
@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://dowj4fa6c1udf" path="res://assets/audio/effects/eat_sound2.mp3" id="5_0ty34"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="11_4jshe"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="12_6o8uj"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/history_state.gd" id="13_1tld3"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="13_wdodc"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="14_0skty"]
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="15_jif3q"]
@@ -26,6 +27,9 @@ process_mode = 3
 script = ExtResource("1_leb16")
 
 [node name="MobTimer" type="Timer" parent="."]
+process_mode = 1
+
+[node name="FloaterTimer" type="Timer" parent="."]
 process_mode = 1
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
@@ -114,13 +118,29 @@ delay_in_seconds = "1.0"
 
 [node name="Playing" type="Node" parent="StateChart/GameState"]
 script = ExtResource("12_6o8uj")
-initial_state = NodePath("DefaultPhase")
+initial_state = NodePath("PlayingHistoryState")
+
+[node name="PlayingHistoryState" type="Node" parent="StateChart/GameState/Playing"]
+script = ExtResource("13_1tld3")
+default_state = NodePath("../DefaultPhase")
 
 [node name="DefaultPhase" type="Node" parent="StateChart/GameState/Playing"]
 script = ExtResource("13_wdodc")
 
+[node name="To DodgePhase" type="Node" parent="StateChart/GameState/Playing/DefaultPhase"]
+script = ExtResource("14_0skty")
+to = NodePath("../../DodgePhase")
+event = &"to_dodge"
+delay_in_seconds = "0.0"
+
 [node name="DodgePhase" type="Node" parent="StateChart/GameState/Playing"]
 script = ExtResource("13_wdodc")
+
+[node name="To DefaultPhase" type="Node" parent="StateChart/GameState/Playing/DodgePhase"]
+process_mode = 1
+script = ExtResource("14_0skty")
+to = NodePath("../../DefaultPhase")
+delay_in_seconds = "30"
 
 [node name="To Paused" type="Node" parent="StateChart/GameState/Playing"]
 script = ExtResource("14_0skty")
@@ -160,6 +180,7 @@ to = NodePath("../../MainMenu")
 delay_in_seconds = "1.0"
 
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
+[connection signal="timeout" from="FloaterTimer" to="." method="_on_floater_timer_timeout"]
 [connection signal="game_over" from="Player" to="." method="game_over"]
 [connection signal="grow" from="Player" to="." method="_on_player_grow"]
 [connection signal="num_bombs_changed" from="Player" to="HUD" method="_on_num_bombs_changed"]
@@ -171,6 +192,8 @@ delay_in_seconds = "1.0"
 [connection signal="state_exited" from="StateChart/GameState/GetReady" to="." method="_on_get_ready_state_exited"]
 [connection signal="state_entered" from="StateChart/GameState/Playing" to="." method="_on_playing_state_entered"]
 [connection signal="state_input" from="StateChart/GameState/Playing" to="." method="_on_playing_state_input"]
+[connection signal="state_entered" from="StateChart/GameState/Playing/DefaultPhase" to="." method="_on_default_phase_state_entered"]
+[connection signal="state_entered" from="StateChart/GameState/Playing/DodgePhase" to="." method="_on_dodge_phase_state_entered"]
 [connection signal="state_entered" from="StateChart/GameState/Paused" to="." method="_on_paused_state_entered"]
 [connection signal="state_entered" from="StateChart/GameState/Unpausing" to="." method="_on_unpausing_state_entered"]
 [connection signal="state_processing" from="StateChart/GameState/Unpausing" to="." method="_on_unpausing_state_processing"]

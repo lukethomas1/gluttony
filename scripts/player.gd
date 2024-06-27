@@ -6,6 +6,7 @@ signal num_bombs_changed(num_bombs:int)
 
 const Mob = preload("res://scripts/mob.gd")
 const Powerup = preload("res://scripts/powerup.gd")
+const Floater = preload("res://scripts/floater.gd")
 
 var score:float
 var num_bombs:int = 0
@@ -29,12 +30,24 @@ func _on_body_entered(_body):
 		num_bombs_changed.emit(num_bombs)
 		powerup.die()
 
+	var floater = _body as Floater
+	if floater != null:
+		handle_floater(floater)
+	
 
 func do_bomb():
 	num_bombs -= 1
 	num_bombs_changed.emit(num_bombs)
 	get_tree().call_group("mobs", "die")
 	$BombSound.play()
+
+
+func handle_floater(floater: Floater):
+	print("floater")
+	score += Calc.calc_floater_growth_amount()
+	scale_player_size()
+	grow.emit(score)
+	floater.die()
 
 
 func handle_mob(mob: Mob):
