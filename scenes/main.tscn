@@ -137,7 +137,7 @@ script = ExtResource("13_wdodc")
 process_mode = 1
 script = ExtResource("14_0skty")
 to = NodePath("../../DefaultPhase")
-delay_in_seconds = "3"
+delay_in_seconds = "5.1"
 
 [node name="To Paused" type="Node" parent="StateChart/GameState/Playing"]
 script = ExtResource("14_0skty")

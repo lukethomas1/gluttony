@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cc5ic50dl3aaj"]
+[gd_scene load_steps=5 format=3 uid="uid://cc5ic50dl3aaj"]
 
 [ext_resource type="Script" uid="uid://d2ryheja2wtj7" path="res://scripts/floater.gd" id="1_vkan0"]
-[ext_resource type="Texture2D" uid="uid://brmypra10fmxq" path="res://icon.svg" id="2_v6hy6"]
+[ext_resource type="Texture2D" uid="uid://dqxhp0kfbkxyq" path="res://assets/textures/yellow_body_square.png" id="2_ao14j"]
+[ext_resource type="Texture2D" uid="uid://dvd3u4erdn88m" path="res://assets/textures/face_i.png" id="3_js0lp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_74831"]
 size = Vector2(118, 118)
@@ -20,8 +21,12 @@ shape = SubResource("RectangleShape2D_74831")
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 scale = Vector2(0.33, 0.33)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.33, 0.33)
-texture = ExtResource("2_v6hy6")
+[node name="Body" type="Sprite2D" parent="."]
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("2_ao14j")
+
+[node name="Eyes" type="Sprite2D" parent="."]
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("3_js0lp")
 
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
