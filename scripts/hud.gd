@@ -1,7 +1,6 @@
 extends CanvasLayer
 
 signal start_game
-signal settings_button_pressed
 signal resume_game
 
 const bomb_texture = preload("res://assets/textures/bomb.png")

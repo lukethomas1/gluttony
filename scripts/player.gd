@@ -43,7 +43,6 @@ func do_bomb():
 
 
 func handle_floater(floater: Floater):
-	print("floater")
 	score += Calc.calc_floater_growth_amount()
 	scale_player_size()
 	grow.emit(score)

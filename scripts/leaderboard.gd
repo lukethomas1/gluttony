@@ -42,9 +42,11 @@ func load_leaderboard():
 	print("Loading leaderboard")
 	var auth = Firebase.Auth.auth
 	if !auth.is_empty():
+		print("Querying firebase for leaderboard")
 		var query : FirestoreQuery = build_query(current_tab)
 		var query_task : FirestoreTask = Firebase.Firestore.query(query)
 		var result : Array = await query_task.result_query
+		print("Query done")
 
 		remove_all()
 

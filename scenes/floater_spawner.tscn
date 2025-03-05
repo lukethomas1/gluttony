@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://ig103tjvk1cd"]
+
+[ext_resource type="Script" path="res://floater_spawner.gd" id="1_wvghb"]
+
+[node name="FloaterSpawner" type="Timer"]
+autostart = true
+script = ExtResource("1_wvghb")
+
+[connection signal="timeout" from="." to="." method="_on_timeout"]

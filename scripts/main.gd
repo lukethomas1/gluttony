@@ -9,7 +9,14 @@ var screen_size:Vector2
 var player_score:float
 var pause_mouse_pos:Vector2
 
+var last_floater_checkpoint:int = 0
+var last_bomb_checkpoint:int = 0
+
 var login_failures = 0
+
+var mob_count = 0
+var start_time = 0
+var end_time = 0
 
 const COLLECTION_ID = "LeaderboardV2"
 
@@ -52,6 +59,10 @@ func _on_auth_request(result_code, result_content):
 
 func new_game():
 	%StateChart.send_event("start")
+	last_floater_checkpoint = 0
+	last_bomb_checkpoint = 0
+	var time = Time.get_time_dict_from_system()
+	start_time = time
 
 
 func game_over():
@@ -71,16 +82,27 @@ func _on_submit_score():
 
 func _on_player_grow(score:int):
 	player_score = score
-	if int(player_score - Calc.default_score) % Calc.bomb_spawn_frequency == 0:
-		create_bomb()
+	var actual_score:int = int(player_score - Calc.default_score)
+	if actual_score >= last_floater_checkpoint + Calc.floater_spawn_frequency:
 		%StateChart.send_event("to_dodge")
+		last_floater_checkpoint = actual_score - (actual_score % Calc.floater_spawn_frequency)
+	if actual_score >= last_bomb_checkpoint + Calc.bomb_spawn_frequency:
+		create_bomb()
+		last_bomb_checkpoint = actual_score - (actual_score % Calc.bomb_spawn_frequency)
 	$HUD.update_score(player_score - Calc.default_score)
 	$EatSound.play()
 
 
 func _on_mob_timer_timeout():
 	# Create a new instance of the Mob scene.
+	mob_count += 1
+	print("created new mob " + str(mob_count))
+	var time = Time.get_time_dict_from_system()
+	print("current time: " + str(time))
+
 	var mob = mob_script.create_new_mob(player_score)
+	if mob.red:
+		print("Mob is red")
 	$Player.grow.connect(mob.adjust_to_score)
 
 	var mob_x_scale = mob.get_node("CollisionShape2D").scale[0]
@@ -200,10 +222,11 @@ func _on_menu_pause_state_entered():
 
 
 func _on_dodge_phase_state_entered():
-	$MobTimer.stop()
+	# $MobTimer.stop()
 	$FloaterTimer.start()
 
 
 func _on_default_phase_state_entered():
 	$FloaterTimer.stop()
-	$MobTimer.start()
+	if $MobTimer.is_stopped():
+		$MobTimer.start()
