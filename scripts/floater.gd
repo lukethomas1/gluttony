@@ -13,7 +13,7 @@ var x_dir = 0
 
 func _physics_process(delta):
 	time += delta
-	var y_velocity = y_speed * sin(time * -1)
+	var y_velocity = y_speed * sin(time)
 	linear_velocity = Vector2(x_speed * x_dir, y_velocity)
 
 
@@ -24,12 +24,16 @@ func _ready():
 	var floater_width = floater_scale * icon_width_pixels
 
 	# Random starting 'time' value
-	time = randf_range(0, PI)
+	time = randf_range(0, 2 * PI)
 
+	# Randomly start at far left or far right of
 	var x_pos = [-1 * floater_width, screen_size[0] + floater_width][randi() % 2]
+
+	# Randomly start at top or bottom of screen (if time = 0, y_pos = 0, if time = PI, y_pos = screen_size[1])
 	var y_pos = screen_size[1] * (1 - cos(time)) / 2
 	position = Vector2(x_pos, y_pos)
     
+	# 
 	x_dir = 1 if x_pos <= 0 else -1
 	y_speed = screen_size[1] / 2 - 120
 

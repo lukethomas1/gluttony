@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://btjrxknvsqn8m"]
 
-[ext_resource type="Script" path="res://scripts/submit_score_box.gd" id="1_kw6hy"]
+[ext_resource type="Script" uid="uid://bgr3s3mhl0bac" path="res://scripts/submit_score_box.gd" id="1_kw6hy"]
 [ext_resource type="Theme" uid="uid://dqrodr3lbqq3v" path="res://scenes/submit_score_box.tres" id="1_t68ws"]
 
 [sub_resource type="Theme" id="Theme_jwqqn"]

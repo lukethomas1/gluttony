@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://dl2yc2ofs3qmo"]
 
-[ext_resource type="Script" path="res://scripts/leaderboard.gd" id="1_jddbr"]
+[ext_resource type="Script" uid="uid://dfh0v72xbmp3f" path="res://scripts/leaderboard.gd" id="1_jddbr"]
 [ext_resource type="Texture2D" uid="uid://csjwysgwy0dmb" path="res://assets/textures/arrow_rotate.png" id="2_ygmg5"]
 
 [sub_resource type="Theme" id="Theme_7mm6l"]
